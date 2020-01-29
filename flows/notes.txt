@@ -1,0 +1,39 @@
+different levels of scope
+
+context - used in one function
+flow1
+  inject -> function -> debug
+    value = context.get('count') || 0;
+    value++;
+    context.set('count', value);
+    return {payload: value};
+
+flow  - used to allow different functions to use variable in flow
+flow 1
+  inject -> function -> debug
+    value = flow.get('count') || 0;
+    value++;
+    flow.set('count', value);
+    return {payload: value};
+  inject -> function -> debug
+    return {payload: flow.get('count')};
+global - used to allow different functions to use variable in different flows
+flow 1
+  inject -> function -> debug
+    value = global.get('count') || 0;
+    value++;
+    global.set('count', value);
+    return {payload: value};
+  inject -> function -> debug
+    return {payload: flow.get('count')};
+flow2
+  inject -> debug
+    inject(payload > global)
+
+Usually you will need to use link nodes to pass msg around. Output link nodes and input link nodes
+
+
+Node-Red Core nodes
+function - you can basically use any javascript that you require to write a function.
+report by exception - use block unless value has changed - you can use different levels of message changes to report otherwise it will drop message
+switch - helps you make decisions - it route messeges based on their property values or sequence position.
