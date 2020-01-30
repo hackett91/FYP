@@ -41,41 +41,32 @@ services:
       - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
     networks:
       - default
-  # kafka-connect:
-  #   image: confluentinc/cp-kafka-connect:5.1.0
-  #   hostname: kafka-connect
-  #   container_name: kafka-connect
-  #   ports:
-  #     - "8083:8083"
-  #   environment:
-  #     CONNECT_BOOTSTRAP_SERVERS: "192.168.1.2:9092"
-  #     CONNECT_REST_ADVERTISED_HOST_NAME: connect
-  #     CONNECT_REST_PORT: 8083
-  #     CONNECT_GROUP_ID: compose-connect-group
-  #     CONNECT_CONFIG_STORAGE_TOPIC: docker-connect-configs
-  #     CONNECT_OFFSET_STORAGE_TOPIC: docker-connect-offsets
-  #     CONNECT_STATUS_STORAGE_TOPIC: docker-connect-status
-  #     CONNECT_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-  #     CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-  #     CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-  #     CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-  #     CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: "1"
-  #     CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: "1"
-  #     CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: "1"
-  #     CONNECT_PLUGIN_PATH: '/usr/share/java,/etc/kafka-connect/jars'
-  #     CONNECT_CONFLUENT_TOPIC_REPLICATION_FACTOR: 1
-  #   volumes:
-  #     - /tmp/custom/jars:/etc/kafka-connect/jars
-  #   depends_on:
-  #     - zookeeper
-  #     - kafka
-  #     - mosquitto
+  grafana:
+      image: grafana/grafana
+      container_name: grafana
+      restart: always
+      ports:
+        - 3000:3000
+      networks:
+        - monitoring
+      volumes:
+        - grafana-volume:/var/lib/grafana
+  influxdb:
+      image: influxdb
+      container_name: influxdb
+      restart: always
+      ports:
+        - 8086:8086
+      networks:
+        - monitoring
+      volumes:
+        - influxdb-volume:/var/lib/influxdb
 volumes:
-  # grafana-volume:
-  #   external: true
-  # influxdb-volume:
-  #   external: true
+  grafana-volume:
+    external: true
+  influxdb-volume:
+    external: true
   node-red-data:
 networks:
   node-red-net:
-  # monitoring:
+  monitoring:

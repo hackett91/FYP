@@ -459,6 +459,26 @@
      "file": "/usr/src/node-red/node_modules/node-red-node-tail/28-tail.js"
     }
    }
+  },
+  "node-red-contrib-influxdb": {
+   "name": "node-red-contrib-influxdb",
+   "version": "0.4.0",
+   "local": false,
+   "nodes": {
+    "influxdb": {
+     "name": "influxdb",
+     "types": [
+      "influxdb",
+      "influxdb out",
+      "influxdb batch",
+      "influxdb in"
+     ],
+     "enabled": true,
+     "local": true,
+     "module": "node-red-contrib-influxdb",
+     "file": "/data/node_modules/node-red-contrib-influxdb/influxdb.js"
+    }
+   }
   }
  },
  "_credentialSecret": "cfc85a7a3c26d57cdbbf475d7967a6fbb3f67198651f0eda8ad8135a4422f814",
