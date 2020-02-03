@@ -215,6 +215,7 @@ module.exports = {
     //    global.get("os")
     functionGlobalContext: {
         kafka:require('kafka-node'),
+        influx:require('influx'),
         // os:require('os'),
         // jfive:require("johnny-five"),
         // j5board:require("johnny-five").Board({repl:false})

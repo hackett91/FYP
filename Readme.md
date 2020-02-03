@@ -12,3 +12,6 @@ docker exec -it kafka /bin/bash
 ./kafka­-console­-producer.sh --­­broker-­list 192.168.1.6:9092 ­­--topic TestTopic
 
 ./kafka-console-consumer.sh --bootstrap-server 192.168.1.6:9092 --topic TestTopic
+
+# Check out listening sockets
+netstat -tulpn | grep LISTEN

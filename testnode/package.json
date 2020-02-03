@@ -27,9 +27,11 @@
         }
     ],
     "dependencies": {
-        "node-red": "1.0.2",
         "kafka-node": "5.0.0",
-        "node-red-contrib-kafka-manager": "0.2.2"
+        "node-red": "1.0.2",
+        "node-red-contrib-influxdb": "~0.4.0",
+        "node-red-contrib-kafka-manager": "0.2.2",
+        "influx": "5.5.1"
     },
     "engines": {
         "node": ">=10"

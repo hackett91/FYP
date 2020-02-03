@@ -214,6 +214,7 @@ module.exports = {
     // can be accessed in a function block as:
     //    global.get("os")
     functionGlobalContext: {
+        influx: require('influx'),
         kafka: require('kafka-node'),
         // os:require('os'),
         // jfive:require("johnny-five"),
