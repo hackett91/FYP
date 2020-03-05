@@ -3,7 +3,7 @@ services:
   node-red:
     build:
       context: .
-      dockerfile: /home/cian/Desktop/DT224/FYP/testnode/Dockerfile
+      dockerfile: /home/cian/Desktop/DT224/FYP/nodered/Dockerfile
     environment:
       - TZ=Europe/Amsterdam
     ports:
@@ -63,13 +63,86 @@ services:
       volumes:
         - influxdb-volume:/var/lib/influxdb
         - ./influxdbconf/influxdb.conf:/etc/influxdb/influxdb.conf:ro
-  hadoop:
-      image: sequenceiq/hadoop-docker:2.7.1
-      hostname: localhost
-      ports:
-       - 50070:50070
-       - 50075:50075
+  flume:
+    image: avastsoftware/flume-hdfs
+    container_name: flume-hdfs
+    restart: always
+    hostname: 192.168.1.6
+    environment:
+      FLUME_AGENT_NAME: agent
+    volumes:
+      - /home/cian/Desktop/DT224/FYP/flume:/opt/lib/flume/conf
+
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    restart: always
+    hostname: localhost
+    ports:
+      - 9870:9870
+      - 9000:9000
+    volumes:
+      - hadoop_namenode:/hadoop/dfs/name
+    environment:
+      - CLUSTER_NAME=test
+    env_file:
+      - ./hadoop/hadoop.env
+
+  datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode
+    restart: always
+    hostname: localhost
+    ports:
+      - 9864:9864
+      - 9867:9867
+      - 9866:9866
+    volumes:
+      - hadoop_datanode:/hadoop/dfs/data
+    environment:
+      SERVICE_PRECONDITION: "namenode:9870"
+    env_file:
+      - ./hadoop/hadoop.env
+
+  resourcemanager:
+    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
+    container_name: resourcemanager
+    hostname: localhost
+    ports:
+      - 8030:8030
+      - 8031:8031
+      - 8032:8032
+      - 8088:8088
+    restart: always
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864"
+    env_file:
+      - ./hadoop/hadoop.env
+
+  nodemanager1:
+    image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
+    container_name: nodemanager
+    restart: always
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
+    env_file:
+      - ./hadoop/hadoop.env
+
+  historyserver:
+    image: bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8
+    container_name: historyserver
+    restart: always
+    environment:
+      SERVICE_PRECONDITION: "namenode:9000 namenode:9870 datanode:9864 resourcemanager:8088"
+    volumes:
+      - hadoop_historyserver:/hadoop/yarn/timeline
+    env_file:
+      - ./hadoop/hadoop.env
+
 volumes:
+  hadoop_namenode:
+  hadoop_datanode:
+  hadoop_historyserver:
   grafana-volume:
     external: true
   influxdb-volume:

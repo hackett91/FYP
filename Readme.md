@@ -24,4 +24,4 @@ docker-compose up -d
 docker-compose scale kafka=3
 
 # Check out hadoop file system and download files
-http://192.168.1.6:9870/explorer.html#/
+http://localhost:9870/explorer.html#/
