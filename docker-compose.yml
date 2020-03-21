@@ -22,7 +22,7 @@ services:
     ports:
       - "9092:9092"
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: 192.168.1.6
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.1.2
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CREATE_TOPICS: 'TestTopic:12:3'
     volumes:
@@ -45,11 +45,14 @@ services:
       image: grafana/grafana
       container_name: grafana
       restart: always
+      environment:
+        GF_PATHS_CONFIG: /etc/grafana/grafana.ini
       ports:
         - 3000:3000
       networks:
         - monitoring
       volumes:
+        - ./grafana:/etc/grafana
         - grafana-volume:/var/lib/grafana
   influxdb:
       image: influxdb:latest
@@ -67,7 +70,7 @@ services:
     image: avastsoftware/flume-hdfs
     container_name: flume-hdfs
     restart: always
-    hostname: 192.168.1.6
+    hostname: 192.168.1.2
     environment:
       FLUME_AGENT_NAME: agent
     volumes:
