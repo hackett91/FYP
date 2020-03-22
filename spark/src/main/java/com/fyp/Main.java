@@ -44,7 +44,7 @@ public class Main {
                             .build();
 
                     Point point1 = Point.measurement("heartRate")
-                            .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+                            .time(cardiacEvent.getTimestamp().getTimeInMillis(), TimeUnit.MILLISECONDS)
                                 .tag("id", Integer.toString(cardiacEvent.getId()))
                                 .tag("sensor", "heartRate")
                                 .addField("value", cardiacEvent.getValue())

@@ -1,6 +1,8 @@
 package com.fyp;
 
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 
 public class CardiacEvent implements Serializable {
 
@@ -8,16 +10,27 @@ public class CardiacEvent implements Serializable {
     private String sensor;
     private int value;
 
+    public Calendar getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Calendar timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    private Calendar timestamp;
+
 
     public CardiacEvent() {
 
 
     }
 
-    public CardiacEvent(int id, String sensor, int value) {
+    public CardiacEvent(int id, String sensor, int value, Calendar timestamp) {
         this.id = id;
         this.sensor = sensor;
         this.value = value;
+        this.timestamp = timestamp;
     }
 
 
