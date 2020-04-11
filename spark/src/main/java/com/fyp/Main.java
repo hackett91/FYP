@@ -34,20 +34,20 @@ public class Main {
                     BatchPoints batchPoints;
                     influxDB = connect("http://localhost:8086", "root", "root");
 
-                    createDatabaseQuery = new Query("CREATE DATABASE CardiacEventsBackUp", "CardiacEventsBackUp");
+                    createDatabaseQuery = new Query("CREATE DATABASE CardiacEvents", "CardiacEvents");
 
                     influxDB.query(createDatabaseQuery);
-                    influxDB.setDatabase("CardiacEventsBackUp");
+                    influxDB.setDatabase("CardiacEvents");
 
                     batchPoints = BatchPoints
-                            .database("CardiacEventsBackUp")
+                            .database("CardiacEvents")
                             .build();
 
                     Point point1 = Point.measurement("heartRate")
                             .time(cardiacEvent.getTimestamp().getTimeInMillis(), TimeUnit.MILLISECONDS)
                                 .tag("id", Integer.toString(cardiacEvent.getId()))
                                 .tag("sensor", "heartRate")
-                                .addField("value", cardiacEvent.getValue())
+                                .addField("value", (float)cardiacEvent.getValue())
                                 .build();
                         batchPoints.point(point1);
                         influxDB.write(batchPoints);
